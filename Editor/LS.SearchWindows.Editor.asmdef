@@ -1,0 +1,18 @@
+{
+    "name": "LS.Attributes.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:4ef028f0df7a61844a718f8c100f3f9c"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,17 @@
+{
+    "name" : "ls.search-windows",
+    "version" : "1.0.0",
+    "displayName" : "Search Windows",
+    "description" : "A collection of attributes for adding search windows in the editors of your code.",
+    "unity" : "2020.3",
+    "keywords" : [
+        "attribute",
+        "search",
+        "window",
+        "asset",
+        "scene"
+    ],
+    "author": {
+        "name" : "LS"
+    }
+}
