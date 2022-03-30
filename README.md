@@ -14,7 +14,7 @@ You can also use a property name for a type.
 ``` cs
 //...
 using UnityEngine;
-using LS.Attributes;
+using LS.SearchWindows;
 
 public class Example : MonoBehavior
 {
