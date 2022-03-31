@@ -1,14 +1,14 @@
 # Search-Windows
 A collection of attributes for adding search windows in your Unity inspectors.
 
-<br> This package includes three different attributes to use: AssetSearch, SceneSearch, and ObjectSearch
+<br> This package includes three different attributes to use: [AssetSearch], [SceneSearch], and [ObjectSearch]
 <br> AssetSearch is used to search your assets, SceneSearch is used to search within the current scene, and ObjectSearch is a combination of both.
-<br> The below examples use the SceneSearch attribute but the syntax is the same for all three.
 
 <br> Use these attributes on your serialized object fields to add a button that opens a search window for your assets/scene objects based on the type.
 This can be used with Generic Objects (which usually can't use the quick search on the normal object field!) and interfaces (though there are some drawbacks to this).
 You can also use a property name for a type.
-<br>
+
+<br> The below examples use the SceneSearch attribute but the syntax is the same for all three.
 ## Examples
 ### General Usage
 ``` cs
