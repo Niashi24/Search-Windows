@@ -62,6 +62,7 @@ namespace LS.SearchWindows.Editor
                 }
 
                 UnityEngine.Object obj = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(basePath + item);
+                if (obj is null) continue;
                 SearchTreeEntry entry = new SearchTreeEntry(new GUIContent(entryTitle.Last(), EditorGUIUtility.ObjectContent(obj, obj.GetType()).image));
                 entry.level = entryTitle.Length;
                 entry.userData = obj;

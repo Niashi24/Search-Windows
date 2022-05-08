@@ -12,7 +12,7 @@ namespace LS.SearchWindows.Editor
     public abstract class SearchDrawerBase<SearchAttribute> : PropertyDrawer
         where SearchAttribute : SearchAttributeBase
     {
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) 
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             var attrib = this.attribute as SearchAttribute;
 
@@ -27,8 +27,8 @@ namespace LS.SearchWindows.Editor
             if (GUI.Button(position, new GUIContent(attrib.label)))
             {
                 Type t = GetType(
-                    attrib, 
-                    fieldType, 
+                    attrib,
+                    fieldType,
                     property
                 );
                 SearchWindow.Open(
@@ -40,7 +40,7 @@ namespace LS.SearchWindows.Editor
 
         protected abstract SearchProviderBase GetProvider(Type t, SerializedProperty property, SearchAttribute attrib);
 
-        public static Type GetType(SearchAttribute attribute, Type fieldType, SerializedProperty property) 
+        public static Type GetType(SearchAttribute attribute, Type fieldType, SerializedProperty property)
         {
             if (attribute.type != null)
                 return attribute.type;
@@ -53,7 +53,7 @@ namespace LS.SearchWindows.Editor
                         return (Type)typeProperty;
                     else
                         Debug.LogError($"\"{attribute.typePropertyName}\" is not a Type property.");
-                else    
+                else
                     Debug.LogError($"Couldn't find property \"{attribute.typePropertyName}\"");
             }
             return fieldType;
@@ -67,12 +67,12 @@ namespace LS.SearchWindows.Editor
             var path = prop.propertyPath.Replace(".Array.data[", "[");
             object obj = prop.serializedObject.targetObject;
             var elements = path.Split('.');
-            foreach(var element in elements.Take(elements.Length-1))
+            foreach (var element in elements.Take(elements.Length - 1))
             {
-                if(element.Contains("["))
+                if (element.Contains("["))
                 {
                     var elementName = element.Substring(0, element.IndexOf("["));
-                    var index = Convert.ToInt32(element.Substring(element.IndexOf("[")).Replace("[","").Replace("]",""));
+                    var index = Convert.ToInt32(element.Substring(element.IndexOf("[")).Replace("[", "").Replace("]", ""));
                     obj = GetValue(obj, elementName, index);
                 }
                 else
@@ -85,14 +85,17 @@ namespace LS.SearchWindows.Editor
 
         public static object GetValue(object source, string name)
         {
-            if(source == null)
+            if (source == null)
                 return null;
+
             var type = source.GetType();
-            var f = type.GetField(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
-            if(f == null)
+
+            var f = FindFieldInTypeHierarchy(type, name);
+
+            if (f == null)
             {
-                var p = type.GetProperty(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
-                if(p == null)
+                var p = FindPropertyInTypeHierarchy(type, name);
+                if (p == null)
                     return null;
                 return p.GetValue(source, null);
             }
@@ -103,11 +106,39 @@ namespace LS.SearchWindows.Editor
         {
             var enumerable = GetValue(source, name) as IEnumerable;
             var enm = enumerable.GetEnumerator();
-            while(index-- >= 0)
+            while (index-- >= 0)
                 enm.MoveNext();
             return enm.Current;
         }
-        
+
+        public static FieldInfo FindFieldInTypeHierarchy(Type providedType, string fieldName)
+        {
+            FieldInfo field = providedType.GetField(fieldName, (BindingFlags)(-1));
+
+
+            while (field == null && providedType.BaseType != null)
+            {
+                providedType = providedType.BaseType;
+                field = providedType.GetField(fieldName, (BindingFlags)(-1));
+            }
+
+            return field;
+        }
+
+        public static PropertyInfo FindPropertyInTypeHierarchy(Type providedType, string propertyName)
+        {
+            PropertyInfo property = providedType.GetProperty(propertyName, (BindingFlags)(-1));
+
+
+            while (property == null && providedType.BaseType != null)
+            {
+                providedType = providedType.BaseType;
+                property = providedType.GetProperty(propertyName, (BindingFlags)(-1));
+            }
+
+            return property;
+        }
+
         #endregion
 
     }
